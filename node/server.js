@@ -46,7 +46,7 @@ app.post("/signin", (req, res) => {
 app.post("/register", (req, res) => {
   const { name, email, password } = req.body;
   database.users.push({
-    id: database.users[database.users.length - 1].id + 1,
+    id: "125",
     name: name,
     email: email,
     password: password,
@@ -60,7 +60,7 @@ app.get("/profile/:id", (req, res) => {
   const { id } = req.params;
   let found = false;
   database.users.forEach((user) => {
-    if (user.id === Number(id)) {
+    if (user.id === id) {
       found = true;
       return res.json(user);
     }
