@@ -26,7 +26,6 @@ class App extends Component {
         id: "",
         name: "",
         email: "",
-        password: "",
         entries: 0,
         joined: "",
       },
@@ -40,12 +39,11 @@ class App extends Component {
         id: data.id,
         name: data.name,
         email: data.email,
-        password: data.password,
         entries: data.entries,
         joined: data.joined,
       },
     });
-    console.log(data);
+    console.log(this.state);
   };
 
   // calculate the frames
@@ -65,7 +63,6 @@ class App extends Component {
 
   // display face box
   displayFaceBox = (data) => {
-    console.log(data);
     this.setState({ box: data });
   };
 
@@ -83,8 +80,27 @@ class App extends Component {
       .predict(
         Clarifai.FACE_DETECT_MODEL,
         "https://samples.clarifai.com/face-det.jpg"
-      )
+      ) // response from the API ML MODEL
       .then((response) => {
+        if (response) {
+          // If the image was submitted
+          fetch("http://localhost:3000/image", {
+            method: "PUT",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              id: this.state.user.id,
+            }),
+          }) // Increase count
+            .then((response) => {
+              return response.json();
+            })
+            .then((count) => {
+              console.log(count);
+              this.setState(Object.assign(this.state.user, { entries: count }));
+            });
+        }
         // functions to calculate the frames
         this.displayFaceBox(this.calculateFaceLocation(response));
       })
@@ -114,7 +130,10 @@ class App extends Component {
         {this.state.route === "home" ? (
           <div>
             <Logo />
-            <Rank />
+            <Rank
+              name={this.state.user.name}
+              entries={this.state.user.entries}
+            />
             <ImageLinkForm
               onInputChange={this.onInputChange}
               onButtonChange={this.onButtonChange}
@@ -122,7 +141,7 @@ class App extends Component {
             <FaceRecognition imageURL={imageURL} box={box} />{" "}
           </div>
         ) : route === "signin" ? (
-          <Signin onRouteChange={this.onRouteChange} />
+          <Signin onRouteChange={this.onRouteChange} loadUser={this.loadUser} />
         ) : (
           <Register
             onRouteChange={this.onRouteChange}

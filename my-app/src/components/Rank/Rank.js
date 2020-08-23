@@ -1,9 +1,9 @@
 import React from "react";
 
-const Rank = () => {
+const Rank = ({ name, entries }) => {
   return (
     <div style={{ display: "flex", justifyContent: "center", margin: "5rem" }}>
-      <div>{"your current rank us #5"}</div>;
+      <div>{`${name}, your current rank us # ${entries}`}</div>;
     </div>
   );
 };
