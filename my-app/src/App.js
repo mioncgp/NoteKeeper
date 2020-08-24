@@ -13,23 +13,25 @@ const app = new Clarifai.App({
   apiKey: "7fb83db52a394e66a6bbcd611bb84f65",
 });
 
+const initialState = {
+  input: "",
+  imageURL: "",
+  box: {}, // box with coordinates
+  route: "signin", // watching routing
+  isSignedIn: false,
+  user: {
+    id: "",
+    name: "",
+    email: "",
+    entries: 0,
+    joined: "",
+  },
+};
+
 class App extends Component {
   constructor() {
     super();
-    this.state = {
-      input: "",
-      imageURL: "",
-      box: {}, // box with coordinates
-      route: "signin", // watching routing
-      isSignedIn: false,
-      user: {
-        id: "",
-        name: "",
-        email: "",
-        entries: 0,
-        joined: "",
-      },
-    };
+    this.state = initialState;
   }
 
   // set the state of the user with the new registered user
@@ -43,7 +45,6 @@ class App extends Component {
         joined: data.joined,
       },
     });
-    console.log(this.state);
   };
 
   // calculate the frames
@@ -97,9 +98,9 @@ class App extends Component {
               return response.json();
             })
             .then((count) => {
-              console.log(count);
               this.setState(Object.assign(this.state.user, { entries: count }));
-            });
+            })
+            .catch((err) => console.log(err));
         }
         // functions to calculate the frames
         this.displayFaceBox(this.calculateFaceLocation(response));
@@ -110,7 +111,7 @@ class App extends Component {
   // Change the route
   onRouteChange = (route) => {
     if (route === "signout") {
-      this.setState({ isSignedIn: false });
+      this.setState({ initialState });
     } else if (route === "home") {
       this.setState({ isSignedIn: true });
     } else {

@@ -3,6 +3,10 @@ const bodyParser = require("body-parser");
 const cors = require("cors");
 const knex = require("knex");
 const bcrypt = require("bcrypt-nodejs");
+const register = require("./controllers/register");
+const signin = require("./controllers/signin");
+const profile = require("./controllers/profile");
+const image = require("./controllers/image");
 
 const db = knex({
   client: "pg",
@@ -14,8 +18,6 @@ const db = knex({
   },
 });
 
-console.log(db.select("*").from("users"));
-
 const app = express();
 
 app.use(bodyParser.json());
@@ -26,67 +28,19 @@ app.get("/", (req, res) => {
 });
 
 app.post("/signin", (req, res) => {
-  if (
-    req.body.email === database.users[0].email &&
-    req.body.password === database.users[0].password
-  ) {
-    res.json(database.users[0]);
-  } else {
-    res.status(400).json("error");
-  }
+  signin.handleSignin(req, res, db, bcrypt);
 });
 
 app.post("/register", (req, res) => {
-  const { name, email, password } = req.body;
-  const hash = bcrypt.hashSync(password);
-  db.transaction((trx) => {
-    trx
-      .insert({
-        email: email,
-        hash: hash,
-      })
-      .into("login")
-      .returning("email")
-      .then((loginEmail) => {
-        return trx("users").returning("*").insert({
-          email: loginEmail[0],
-          name: name,
-          joined: new Date(),
-        });
-      })
-      .then((user) => {
-        res.json(user[0]);
-      })
-      .then(trx.commit)
-      .catch(trx.rollback);
-  }).catch((err) => res.status(400).json("Unable to register"));
+  register.handleRegister(req, res, db, bcrypt);
 });
 
 app.get("/profile/:id", (req, res) => {
-  const { id } = req.params;
-  db.select("*")
-    .from("users")
-    .where({ id: id })
-    .then((user) => {
-      if (user.length) {
-        res.json(user[0]);
-      } else {
-        res.status(400).json("Not Found");
-      }
-    })
-    .catch(() => res.status(400).json("error"));
+  profile.handleProfile(req, res, db);
 });
 
 app.put("/image", (req, res) => {
-  const { id } = req.body;
-  db("users")
-    .where("id", "=", id)
-    .increment("entries", 1)
-    .returning("entries")
-    .then((entries) => {
-      res.json(entries[0]);
-    })
-    .catch((err) => res.status(400));
+  image.handleImage(req, res, db);
 });
 
 app.listen(3000, () => {
