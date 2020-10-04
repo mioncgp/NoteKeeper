@@ -34,7 +34,8 @@ class Register extends React.Component {
     })
       .then((response) => response.json())
       .then((user) => {
-        if (user) {
+        console.log(user);
+        if (user.id) {
           this.props.loadUser(user);
           this.props.onRouteChange("home");
         }
@@ -67,6 +68,9 @@ class Register extends React.Component {
                 <input
                   className="pa2 input-reset ba bg-transparent hover-bg-black hover-white w-100"
                   type="email"
+                  pattern=".+@globex.com"
+                  size="30"
+                  required
                   name="email-address"
                   id="email-address"
                   onChange={this.onEmailChange}
