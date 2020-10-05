@@ -13,7 +13,9 @@ class App extends Component {
     super();
 
     this.state = {
+      post: [],
       input: "",
+      inputText: "",
       imageUrl: "",
       box: {},
       route: "signin",
@@ -30,10 +32,26 @@ class App extends Component {
 
   onInputChange = (e) => {
     this.setState({ input: e.target.value });
+    this.setState({ inputText: e.target.value });
   };
 
   onButtonSubmit = (e) => {
-    console.log("lol");
+    const { input, inputText } = this.state;
+    if (input.length > 1 && inputText.length > 1) {
+      fetch("http://localhost:3001/post", {
+        method: "post",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          id: this.state.user.id,
+          input: this.state.input,
+          inputText: this.state.inputText,
+        }),
+      })
+        .then((data) => {
+          return data.json();
+        })
+        .then((data) => this.setState({ post: data.post }));
+    }
   };
 
   onRouteChange = (route) => {
@@ -58,7 +76,7 @@ class App extends Component {
   };
 
   render() {
-    const { isSignedIn, imageUrl, route, box } = this.state;
+    const { isSignedIn, route, user, post } = this.state;
     return (
       <div className="App">
         <Navigation
@@ -68,7 +86,12 @@ class App extends Component {
         {route === "home" ? (
           <div>
             <Logo />
-            <Rank />
+            <Rank
+              name={user.name}
+              entries={user.entries}
+              post={post}
+              id={user.id}
+            />
             <ImageLinkForm
               onInputChange={this.onInputChange}
               onButtonSubmit={this.onButtonSubmit}

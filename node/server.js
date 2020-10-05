@@ -68,19 +68,56 @@ app.get("/profile/:id", (req, res) => {
     .catch((err) => res.status(400).json("unable to register"));
 });
 
-app.put("/posts", (req, res) => {
-  const { post_id } = req.body;
+// app.put("/posts", (req, res) => {
+//   const { post_id } = req.body;
+//   db("posts")
+//     .select("*")
+//     .where("post_id", "=", post_id)
+//     .then((posts) => {
+//       if (posts.length) {
+//         res.json(posts[0]);
+//       } else {
+//         res.status(400).json("something went wrong");
+//       }
+//     })
+//     .catch((err) => res.status(400).json("unable to register"));
+// });
+
+app.post("/post", (req, res) => {
+  const { id, input, inputText } = req.body;
+  db.transaction((trx) => {
+    trx
+      .insert({
+        post_id: id,
+        title: input,
+        text: inputText,
+      })
+      .into("posts")
+      .returning("*")
+      .then((post) => {
+        return trx("users")
+          .where("id", "=", post[0].post_id)
+          .increment("entries", 1)
+          .returning("entries")
+          .then((data) => {
+            res.json({
+              post: post,
+              data: data,
+            });
+          });
+      })
+      .then(trx.commit)
+      .catch(trx.rollback);
+  }).catch((err) => res.status(400).json("unable to register"));
+});
+
+app.post("/getposts", (req, res) => {
+  const { id } = req.body;
   db("posts")
     .select("*")
-    .where("post_id", "=", post_id)
-    .then((posts) => {
-      if (posts.length) {
-        res.json(posts[0]);
-      } else {
-        res.status(400).json("something went wrong");
-      }
-    })
-    .catch((err) => res.status(400).json("unable to register"));
+    .where("post_id", "=", id)
+    .then((posts) => res.json(posts))
+    .catch((err) => res.status(400));
 });
 
 app.post("/register", (req, res) => {
