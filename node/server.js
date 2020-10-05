@@ -85,6 +85,7 @@ app.get("/profile/:id", (req, res) => {
 
 app.post("/post", (req, res) => {
   const { id, input, inputText } = req.body;
+  console.log(input, inputText);
   db.transaction((trx) => {
     trx
       .insert({

@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import Navigation from "./components/Navigation/Navigation.js";
-import ImageLinkForm from "./components/ImageLinkForm/ImageLinkForm";
-import Rank from "./components/Rank/Rank";
+import AddPost from "./components/addPost/AddPost";
 import Signin from "./components/Signin/Signin";
 import Register from "./components/Register/Register";
 import Logo from "./components/Logo/Logo";
@@ -13,11 +12,6 @@ class App extends Component {
     super();
 
     this.state = {
-      post: [],
-      input: "",
-      inputText: "",
-      imageUrl: "",
-      box: {},
       route: "signin",
       isSignedIn: false,
       user: {
@@ -29,30 +23,6 @@ class App extends Component {
       },
     };
   }
-
-  onInputChange = (e) => {
-    this.setState({ input: e.target.value });
-    this.setState({ inputText: e.target.value });
-  };
-
-  onButtonSubmit = (e) => {
-    const { input, inputText } = this.state;
-    if (input.length > 1 && inputText.length > 1) {
-      fetch("http://localhost:3001/post", {
-        method: "post",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          id: this.state.user.id,
-          input: this.state.input,
-          inputText: this.state.inputText,
-        }),
-      })
-        .then((data) => {
-          return data.json();
-        })
-        .then((data) => this.setState({ post: data.post }));
-    }
-  };
 
   onRouteChange = (route) => {
     if (route === "signout") {
@@ -76,7 +46,7 @@ class App extends Component {
   };
 
   render() {
-    const { isSignedIn, route, user, post } = this.state;
+    const { isSignedIn, route, user } = this.state;
     return (
       <div className="App">
         <Navigation
@@ -86,16 +56,7 @@ class App extends Component {
         {route === "home" ? (
           <div>
             <Logo />
-            <Rank
-              name={user.name}
-              entries={user.entries}
-              post={post}
-              id={user.id}
-            />
-            <ImageLinkForm
-              onInputChange={this.onInputChange}
-              onButtonSubmit={this.onButtonSubmit}
-            />
+            <AddPost id={user.id} name={user.name} entries={user.entries} />
           </div>
         ) : route === "signin" ? (
           <Signin loadUser={this.loadUser} onRouteChange={this.onRouteChange} />
