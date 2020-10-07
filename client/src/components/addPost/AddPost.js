@@ -53,6 +53,8 @@ class AddPost extends React.Component {
           this.setState({
             posts: [...this.state.posts, data.post[0]],
             entries: data.data[0],
+            input: "",
+            inputText: "",
           })
         );
     }
@@ -79,11 +81,13 @@ class AddPost extends React.Component {
               className="f4 pa2 w-70 center"
               type="text"
               onChange={this.onInputChange}
+              value={this.state.input}
             />
             <textarea
               className="f4 pa2 w-70 center"
               type="text"
               onChange={this.onInputChangeText}
+              value={this.state.inputText}
             ></textarea>
 
             <button

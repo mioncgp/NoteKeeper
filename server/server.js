@@ -68,21 +68,6 @@ app.get("/profile/:id", (req, res) => {
     .catch((err) => res.status(400).json("unable to register"));
 });
 
-// app.put("/posts", (req, res) => {
-//   const { post_id } = req.body;
-//   db("posts")
-//     .select("*")
-//     .where("post_id", "=", post_id)
-//     .then((posts) => {
-//       if (posts.length) {
-//         res.json(posts[0]);
-//       } else {
-//         res.status(400).json("something went wrong");
-//       }
-//     })
-//     .catch((err) => res.status(400).json("unable to register"));
-// });
-
 app.post("/post", (req, res) => {
   const { id, input, inputText } = req.body;
   console.log(input, inputText);
@@ -157,9 +142,33 @@ app.delete("/delete", (req, res) => {
     .where("id", "=", req.body.id)
     .del()
     .then((delPost) => {
+      console.log(delPost);
       res.json("deleted");
     })
     .catch((err) => res.status(400));
+  db.transaction((trx) => {
+    trx
+      .insert({
+        hash: hash,
+        email: email,
+      })
+      .into("login")
+      .returning("email")
+      .then((loginEmail) => {
+        return trx("users")
+          .returning("*")
+          .insert({
+            email: loginEmail[0],
+            name: name,
+            joined: new Date(),
+          })
+          .then((user) => {
+            res.json(user[0]);
+          });
+      })
+      .then(trx.commit)
+      .catch(trx.rollback);
+  }).catch((err) => res.status(400).json("unable to register"));
 });
 
 app.listen(3001, () => {
