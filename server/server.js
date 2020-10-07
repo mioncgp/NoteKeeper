@@ -152,6 +152,16 @@ app.post("/register", (req, res) => {
   }).catch((err) => res.status(400).json("unable to register"));
 });
 
+app.delete("/delete", (req, res) => {
+  db("posts")
+    .where("id", "=", req.body.id)
+    .del()
+    .then((delPost) => {
+      res.json("deleted");
+    })
+    .catch((err) => res.status(400));
+});
+
 app.listen(3001, () => {
   console.log(`app is runnung on port ${3001}`);
 });

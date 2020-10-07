@@ -3,8 +3,6 @@ import Navigation from "./components/Navigation/Navigation.js";
 import AddPost from "./components/addPost/AddPost";
 import Signin from "./components/Signin/Signin";
 import Register from "./components/Register/Register";
-import Logo from "./components/Logo/Logo";
-
 import "./App.css";
 
 class App extends Component {
@@ -27,10 +25,13 @@ class App extends Component {
   onRouteChange = (route) => {
     if (route === "signout") {
       this.setState({ isSignedIn: false });
+      this.setState({ route: "signin" });
     } else if (route === "home") {
       this.setState({ isSignedIn: true });
+      this.setState({ route: route });
+    } else {
+      this.setState({ route: route });
     }
-    this.setState({ route: route });
   };
 
   loadUser = (data) => {
@@ -55,7 +56,6 @@ class App extends Component {
         />
         {route === "home" ? (
           <div>
-            <Logo />
             <AddPost id={user.id} name={user.name} entries={user.entries} />
           </div>
         ) : route === "signin" ? (

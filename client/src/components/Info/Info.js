@@ -6,7 +6,9 @@ class Info extends Component {
     return (
       <div>
         <div>
-          <div className="">{`${name}, your current entry count is...`}</div>
+          <div className="">{`Hello ${name[0].toUpperCase()}${name
+            .slice(1)
+            .toLowerCase()}, your number of notes is`}</div>
           <div className="">{entries}</div>
         </div>
       </div>
