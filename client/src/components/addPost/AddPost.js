@@ -24,6 +24,7 @@ class AddPost extends React.Component {
     this.setState({
       posts: [...updated],
     });
+    this.setState({ entries: this.state.entries - 1 });
   };
 
   onInputChange = (e) => {

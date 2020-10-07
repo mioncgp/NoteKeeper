@@ -52,7 +52,6 @@ class Signin extends React.Component {
                   type="email"
                   required
                   name="email-address"
-                  required
                   onChange={this.onEmailChange}
                 />
               </div>

@@ -139,36 +139,24 @@ app.post("/register", (req, res) => {
 
 app.delete("/delete", (req, res) => {
   db("posts")
+    .select("post_id")
+    .where("id", "=", req.body.id)
+    .then((post) => {
+      return db("users")
+        .where("id", "=", post[0].post_id)
+        .decrement("entries", 1)
+        .returning("entries")
+        .then((entries) => {
+          console.log(entries);
+        });
+    });
+  db("posts")
     .where("id", "=", req.body.id)
     .del()
     .then((delPost) => {
-      console.log(delPost);
       res.json("deleted");
     })
     .catch((err) => res.status(400));
-  db.transaction((trx) => {
-    trx
-      .insert({
-        hash: hash,
-        email: email,
-      })
-      .into("login")
-      .returning("email")
-      .then((loginEmail) => {
-        return trx("users")
-          .returning("*")
-          .insert({
-            email: loginEmail[0],
-            name: name,
-            joined: new Date(),
-          })
-          .then((user) => {
-            res.json(user[0]);
-          });
-      })
-      .then(trx.commit)
-      .catch(trx.rollback);
-  }).catch((err) => res.status(400).json("unable to register"));
 });
 
 app.listen(3001, () => {
