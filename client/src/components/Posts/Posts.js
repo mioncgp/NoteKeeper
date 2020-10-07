@@ -2,12 +2,8 @@ import React from "react";
 import DeleteNote from "../DeleteNote/DeleteNote";
 
 class Posts extends React.Component {
-  constructor() {
-    super();
-
-    this.state = {
-      posts: [],
-    };
+  constructor(props) {
+    super(props);
   }
 
   delete = (id) => {
@@ -21,11 +17,7 @@ class Posts extends React.Component {
       .then((response) => response.json())
       .then((data) => {
         if (data === "deleted") {
-          this.setState({
-            ids: Array.from(
-              new Set([...this.state.ids.filter((el) => el !== id)])
-            ),
-          });
+          console.log(this.props.update);
         }
       });
   };
@@ -38,7 +30,6 @@ class Posts extends React.Component {
             this.props.posts.map((post, index) => {
               return (
                 <div key={post.id}>
-                  {this.state.ids.push(post.id)}
                   <p>{`Number: ${index + 1}`}</p>
                   <h5>{`Title: ${post.title}`}</h5>
                   <p>{`Text: ${post.text}`}</p>

@@ -13,8 +13,13 @@ class AddPost extends React.Component {
       posts: [],
       input: "",
       inputText: "",
+      update: 0,
     };
   }
+
+  updateUI = () => {
+    this.setState({ update: 1 });
+  };
 
   onInputChange = (e) => {
     this.setState({ input: e.target.value });
@@ -61,6 +66,7 @@ class AddPost extends React.Component {
   }
 
   render() {
+    console.log("ren");
     return (
       <div>
         <div className="center">
@@ -83,10 +89,10 @@ class AddPost extends React.Component {
               Detect
             </button>
           </div>
+          <Info name={this.props.name} entries={this.state.entries} />
           {this.state.posts.length !== 0 ? (
             <div>
-              <Posts posts={this.state.posts} />
-              <Info name={this.props.name} entries={this.state.entries} />
+              <Posts posts={this.state.posts} update={this.updateUI} />
             </div>
           ) : null}
         </div>
