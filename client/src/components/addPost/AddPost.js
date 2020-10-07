@@ -17,8 +17,13 @@ class AddPost extends React.Component {
     };
   }
 
-  updateUI = () => {
-    this.setState({ update: 1 });
+  updateUI = (id) => {
+    const updated = this.state.posts.filter((post) => {
+      return post.id !== id;
+    });
+    this.setState({
+      posts: [...updated],
+    });
   };
 
   onInputChange = (e) => {
@@ -66,7 +71,6 @@ class AddPost extends React.Component {
   }
 
   render() {
-    console.log("ren");
     return (
       <div>
         <div className="center">

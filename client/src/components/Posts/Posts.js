@@ -2,10 +2,6 @@ import React from "react";
 import DeleteNote from "../DeleteNote/DeleteNote";
 
 class Posts extends React.Component {
-  constructor(props) {
-    super(props);
-  }
-
   delete = (id) => {
     fetch("http://localhost:3001/delete", {
       method: "delete",
@@ -17,7 +13,7 @@ class Posts extends React.Component {
       .then((response) => response.json())
       .then((data) => {
         if (data === "deleted") {
-          console.log(this.props.update);
+          this.props.update(id);
         }
       });
   };
