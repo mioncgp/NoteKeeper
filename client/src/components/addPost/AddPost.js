@@ -1,7 +1,7 @@
 import React from "react";
-// import "./ImageLinkForm.css";
 import Posts from "../Posts/Posts";
 import Info from "../Info/Info";
+import "./addpost-style.css";
 
 class AddPost extends React.Component {
   constructor(props) {
@@ -57,7 +57,8 @@ class AddPost extends React.Component {
             input: "",
             inputText: "",
           })
-        );
+        )
+        .catch((err) => err.json("something went wrong"));
     }
   };
 
@@ -68,43 +69,53 @@ class AddPost extends React.Component {
       body: JSON.stringify({
         id: this.props.id,
       }),
-    }).then((response) =>
-      response.json().then((posts) => this.setState({ posts: posts }))
-    );
+    })
+      .then((response) =>
+        response.json().then((posts) => this.setState({ posts: posts }))
+      )
+      .catch((err) => err.json("something went wrong"));
   }
 
   render() {
     return (
       <div>
-        <div className="center">
-          <div className="form center pa4 br3 shadow-5">
-            <input
-              className="f4 pa2 w-70 center"
-              type="text"
-              onChange={this.onInputChange}
-              value={this.state.input}
-            />
-            <textarea
-              className="f4 pa2 w-70 center"
-              type="text"
-              onChange={this.onInputChangeText}
-              value={this.state.inputText}
-            ></textarea>
-
-            <button
-              className="w-30 grow f4 link ph3 pv2 dib white bg-light-purple"
-              onClick={this.onButtonSubmit}
-            >
-              Detect
-            </button>
-          </div>
-          <Info name={this.props.name} entries={this.state.entries} />
-          {this.state.posts.length !== 0 ? (
-            <div>
-              <Posts posts={this.state.posts} update={this.updateUI} />
+        <div className="container-addpost">
+          <div className="flex-addpost">
+            <div className="flex-item-addpost">
+              <label htmlFor="title">Title</label>
+              <input
+                id="title"
+                className=""
+                type="text"
+                onChange={this.onInputChange}
+                value={this.state.input}
+              />
             </div>
-          ) : null}
+            <div className="flex-item-addpost">
+              <label htmlFor="ta">Text</label>
+              <textarea
+                id="ta"
+                className=""
+                type="text"
+                onChange={this.onInputChangeText}
+                value={this.state.inputText}
+                rows="5"
+                cols="33"
+              ></textarea>
+            </div>
+            <div className="flex-item-addpost">
+              <button className="btn" onClick={this.onButtonSubmit}>
+                Add Note
+              </button>
+            </div>
+            <div className="flex-item-addpost">
+              <Info name={this.props.name} entries={this.state.entries} />
+            </div>
+          </div>
         </div>
+        {this.state.posts.length !== 0 ? (
+          <Posts posts={this.state.posts} update={this.updateUI} />
+        ) : null}
       </div>
     );
   }

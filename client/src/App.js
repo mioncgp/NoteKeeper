@@ -25,7 +25,17 @@ class App extends Component {
   onRouteChange = (route) => {
     if (route === "signout") {
       this.setState({ isSignedIn: false });
-      this.setState({ route: "signin" });
+      this.setState({
+        route: "signin",
+        isSignedIn: false,
+        user: {
+          id: "",
+          name: "",
+          email: "",
+          entries: 0,
+          joined: "",
+        },
+      });
     } else if (route === "home") {
       this.setState({ isSignedIn: true });
       this.setState({ route: route });
@@ -54,18 +64,23 @@ class App extends Component {
           isSignedIn={isSignedIn}
           onRouteChange={this.onRouteChange}
         />
-        {route === "home" ? (
-          <div>
-            <AddPost id={user.id} name={user.name} entries={user.entries} />
-          </div>
-        ) : route === "signin" ? (
-          <Signin loadUser={this.loadUser} onRouteChange={this.onRouteChange} />
-        ) : (
-          <Register
-            loadUser={this.loadUser}
-            onRouteChange={this.onRouteChange}
-          />
-        )}
+        <div className="container-app">
+          {route === "home" ? (
+            <div>
+              <AddPost id={user.id} name={user.name} entries={user.entries} />
+            </div>
+          ) : route === "signin" ? (
+            <Signin
+              loadUser={this.loadUser}
+              onRouteChange={this.onRouteChange}
+            />
+          ) : (
+            <Register
+              loadUser={this.loadUser}
+              onRouteChange={this.onRouteChange}
+            />
+          )}
+        </div>
       </div>
     );
   }
