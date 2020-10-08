@@ -1,6 +1,5 @@
-addPost = (req, res) => {
+const addPost = (req, res, db) => {
   const { id, input, inputText } = req.body;
-  console.log(input, inputText);
   db.transaction((trx) => {
     trx
       .insert({
@@ -27,7 +26,7 @@ addPost = (req, res) => {
   }).catch((err) => res.status(400).json("unable to register"));
 };
 
-getPosts = (req, res) => {
+const getPosts = (req, res, db) => {
   const { id } = req.body;
   db("posts")
     .select("*")
@@ -37,6 +36,6 @@ getPosts = (req, res) => {
 };
 
 module.exports = {
-  addPost: this.addPost,
-  getPosts: this.getPosts,
+  addPost: addPost,
+  getPosts: getPosts,
 };

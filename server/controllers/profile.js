@@ -1,4 +1,4 @@
-handleProfile = (req, res) => {
+const handleProfile = (req, res, db) => {
   const { id } = req.params;
   db("users")
     .select("*")
@@ -14,5 +14,5 @@ handleProfile = (req, res) => {
 };
 
 module.exports = {
-  handleProfile: this.handleProfile,
+  handleProfile: handleProfile,
 };

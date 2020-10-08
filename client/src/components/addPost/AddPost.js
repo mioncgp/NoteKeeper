@@ -58,7 +58,9 @@ class AddPost extends React.Component {
             inputText: "",
           })
         )
-        .catch((err) => err.json("something went wrong"));
+        .catch((err) => {
+          throw "something went wrong";
+        });
     }
   };
 
@@ -73,7 +75,9 @@ class AddPost extends React.Component {
       .then((response) =>
         response.json().then((posts) => this.setState({ posts: posts }))
       )
-      .catch((err) => err.json("something went wrong"));
+      .catch((err) => {
+        throw "something went wrong";
+      });
   }
 
   render() {

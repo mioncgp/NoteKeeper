@@ -1,4 +1,4 @@
-handleDelete = (req, res) => {
+const handleDelete = (req, res, db) => {
   db("posts")
     .select("post_id")
     .where("id", "=", req.body.id)
@@ -19,5 +19,5 @@ handleDelete = (req, res) => {
 };
 
 module.exports = {
-  handleDelete: this.handleDelete,
+  handleDelete: handleDelete,
 };

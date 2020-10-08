@@ -17,7 +17,9 @@ class Posts extends React.Component {
           this.props.update(id);
         }
       })
-      .catch((err) => err.json("something went wrong"));
+      .catch((err) => {
+        throw "something went wrong";
+      });
   };
 
   render() {
