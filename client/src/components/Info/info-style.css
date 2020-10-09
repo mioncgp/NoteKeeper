@@ -5,3 +5,11 @@
   font-size: 2rem;
   transform: translateX(-50%);
 } */
+
+.name {
+  font-weight: 700;
+}
+
+.count {
+  text-align: center;
+}

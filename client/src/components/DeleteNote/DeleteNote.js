@@ -4,7 +4,12 @@ class DeleteNote extends React.Component {
   render() {
     return (
       <div>
-        <button onClick={() => this.props.delete(this.props.id)}>Delete</button>
+        <button
+          className={this.props.className}
+          onClick={() => this.props.delete(this.props.id)}
+        >
+          Delete Note
+        </button>
       </div>
     );
   }

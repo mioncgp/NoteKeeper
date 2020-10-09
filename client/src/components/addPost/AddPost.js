@@ -89,7 +89,7 @@ class AddPost extends React.Component {
               <label htmlFor="title">Title</label>
               <input
                 id="title"
-                className=""
+                className="title-input"
                 type="text"
                 onChange={this.onInputChange}
                 value={this.state.input}
@@ -99,16 +99,16 @@ class AddPost extends React.Component {
               <label htmlFor="ta">Text</label>
               <textarea
                 id="ta"
-                className=""
+                className="ta-input"
                 type="text"
                 onChange={this.onInputChangeText}
                 value={this.state.inputText}
                 rows="5"
-                cols="33"
+                cols="35"
               ></textarea>
             </div>
             <div className="flex-item-addpost">
-              <button className="btn" onClick={this.onButtonSubmit}>
+              <button className="add-note-btn" onClick={this.onButtonSubmit}>
                 Add Note
               </button>
             </div>

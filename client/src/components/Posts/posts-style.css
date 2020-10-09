@@ -4,13 +4,49 @@
 
 .posts {
   display: flex;
-  justify-content: center;
   flex-wrap: wrap;
-  flex-direction: row;
+  overflow: hidden;
+  justify-content: center;
+  font-size: 1.5rem;
 }
 
 .post {
-  width: 15rem;
-  border: black 1px solid;
+  text-align: center;
+  width: 25rem;
+  height: 15rem;
+  border: 2px solid black;
+  border-radius: 5px;
+  padding: 1em 1em;
   margin: 1rem;
+  position: relative;
+  overflow: scroll;
+}
+
+.number {
+  position: absolute;
+  top: 5px;
+  left: 5px;
+  text-decoration: underline;
+}
+
+.title-text {
+  padding: 0.5rem;
+  text-decoration: underline;
+}
+
+.delete-post {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  padding: 0rem 0.5rem;
+  border-radius: 2px;
+  font-size: 1rem;
+}
+
+.delete-post:hover {
+  background: gray;
+}
+
+.text {
+  padding: 1rem;
 }

@@ -30,10 +30,16 @@ class Posts extends React.Component {
             this.props.posts.map((post, index) => {
               return (
                 <div key={post.id} className="post">
-                  <p>{`Number: ${index + 1}`}</p>
-                  <h5>{`Title: ${post.title}`}</h5>
-                  <p>{`Text: ${post.text}`}</p>
-                  <DeleteNote id={post.id} delete={this.delete} />
+                  <p className="number">{`Number: ${index + 1}`}</p>
+                  <h5 className="post-title">Title:</h5>
+                  <h4 className="title-text">{`${post.title}`}</h4>
+                  <h6>Text:</h6>
+                  <p className="text">{`${post.text}`}</p>
+                  <DeleteNote
+                    className="delete-post"
+                    id={post.id}
+                    delete={this.delete}
+                  />
                 </div>
               );
             })}

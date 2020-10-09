@@ -7,10 +7,14 @@ class Info extends Component {
     return (
       <div>
         <div className="container-info">
-          <div className="">{`Hello ${name[0].toUpperCase()}${name
-            .slice(1)
-            .toLowerCase()}, your number of notes is`}</div>
-          <div className="">{entries}</div>
+          <div>
+            Hello
+            <span className="name">{` ${name[0].toUpperCase()}${name
+              .slice(1)
+              .toLowerCase()}, `}</span>
+            your note count is:
+          </div>
+          <div className="count name">{entries}</div>
         </div>
       </div>
     );
